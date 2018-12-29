@@ -1,13 +1,16 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin') // 用于拷贝文件
+const webpack = require('webpack')
 
 const path = require('path')
 const srcDir = path.resolve(__dirname, './src')
 module.exports = {
     entry: {
-        page: './src/page/page.js'
+        page1: './src/page1/page1.js',
+        page2: './src/page2/page2.js'
     },
     output: {
-        filename: 'js/[name].bundle.js'
+        filename: 'js/[name].bundle.js',
+        path: path.resolve('./dist'),
     },
     resolve: {
         alias: {
@@ -16,7 +19,8 @@ module.exports = {
         }
     },
     devServer: {
-        host:"localhost",
+        host: "localhost",
+        contentBase: './dist/'
     },
     module: {
         rules: [
@@ -44,7 +48,7 @@ module.exports = {
                     limit: 10000,
                     name(file) {
                         if (file.match(/\.(png|jpe?g|gif)$/) != null)
-                        return 'images/[name].[hash:7].[ext]'
+                            return 'images/[name].[hash:7].[ext]'
                         else {
                             return '[name].[hash:7].[ext]'
                         }
@@ -56,9 +60,19 @@ module.exports = {
     plugins: [
         new CopyWebpackPlugin([
             {
-                from : './index.html',
+                from: './index1.html',
+                to: './'
+            },
+            {
+                from: './index2.html',
                 to: './'
             }
         ]),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            jquery: "jquery",
+            "window.jQuery": "jquery"
+        })
     ]
 }
