@@ -4,8 +4,7 @@ const path = require('path')
 const srcDir = path.resolve(__dirname, './src')
 module.exports = {
     entry: {
-        page1: './src/page1/page1.js',
-        page2: './src/page2/page2.js'
+        page: './src/page/page.js'
     },
     output: {
         filename: 'js/[name].bundle.js'
@@ -18,17 +17,6 @@ module.exports = {
     },
     devServer: {
         host:"localhost",
-        contentBase: './dist/',
-        proxy: {
-            // 跨域反向代理
-            // "/test": {
-            //     target: "http://tvlinkapi45.ftoul.com",
-            //     changeOrigin: true,
-            //     pathRewrite: {
-            //         '^/test': ''
-            //     }
-            // }
-        }
     },
     module: {
         rules: [
@@ -68,11 +56,7 @@ module.exports = {
     plugins: [
         new CopyWebpackPlugin([
             {
-                from : './index1.html',
-                to: './'
-            },
-            {
-                from : './index2.html',
+                from : './index.html',
                 to: './'
             }
         ]),
