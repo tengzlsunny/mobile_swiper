@@ -6,7 +6,8 @@ const srcDir = path.resolve(__dirname, './src')
 module.exports = {
     entry: {
         page1: './src/page1/page1.js',
-        page2: './src/page2/page2.js'
+        page2: './src/page2/page2.js',
+        page3: './src/page3/page3.js',
     },
     output: {
         filename: 'js/[name].bundle.js',
@@ -65,6 +66,10 @@ module.exports = {
             },
             {
                 from: './index2.html',
+                to: './'
+            },
+            {
+                from: './index3.html',
                 to: './'
             }
         ]),

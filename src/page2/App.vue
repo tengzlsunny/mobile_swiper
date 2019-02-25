@@ -1,52 +1,55 @@
 <template>
-    <div class="v_swiper">
-        <ul>
-            <li v-for="(v,i) in dataList" :key="i">{{v}}</li>
-        </ul>
+    <div class="v_swpiper_bk">
+        <div class="v_swiper">
+            <ul class="ver_ul">
+                <li v-for="(v,i) in dataList" :key="i">{{v}}</li>
+                <li class="ver_li">{{dataList[0]}}</li>
+            </ul>
+        </div>
     </div>
+    
 </template>
 <script>
-import $ from 'jquery'
 export default {
     data: _=> ({
         dataList: [
             '1111111111',
             '2222222222',
-            '3333333333',
-            '4444444444',
-            '5555555555',
-            '6666666666',
-            '7777777777',
-            '9999999999',
-            '8888888888',
-            '0000000000',
-            '1212121212',
-            '2323232323',
-            '3443434344',
-            '5656565656',
-            '6767676767',
-            '7878787878',
-            '8989898989',
-            '9090909090',
+            '3333333333'
         ],
-        ulPlace: 0,
-        ulLen: 0
+        ulLen: 0,
+        liHeight: '',
+        timer: null
+       
     }),
     mounted() {
-        var that = this,
-            liHeight = $('.v_swiper li').height();
-            
-        setInterval(function(){
-            if (that.ulLen >= that.dataList.length - 1 ) {
-                that.ulPlace = 0
-                that.ulLen = 0
-            } else {
-                that.ulLen ++
-                that.ulPlace += liHeight
-            }
-            let temp = - that.ulPlace + 'px'
-            $('.v_swiper ul').animate({'top': - that.ulPlace},1000)
-        },1000)
+        this.setInt()
+    },
+    methods: {
+        setInt() {
+            var that = this,
+                liHeight = document.querySelector('.ver_ul li').clientHeight,
+                ulScroll = document.querySelector('.v_swiper');
+
+            that.liHeight = liHeight
+            that.timer = setInterval(function(){
+                if (that.ulLen == that.dataList.length) {
+                    clearInterval(that.timer)
+                    $(ulScroll).animate({scrollTop: that.dataList.length * liHeight},500)
+                    setTimeout(() => {
+                        that.ulLen = 0
+                        $(ulScroll).animate({scrollTop: 0},0)
+                        that.setInt()
+                    },500)
+                } else {
+                    that.ulLen ++
+                    $(ulScroll).animate({scrollTop: that.ulLen * liHeight},1000)
+                    // ulScroll.scrollTop = that.ulLen * liHeight
+                    // $('.ver_ul').animate({scrollTop: that.ulLen * liHeight},500)
+                }
+            },1000)
+        }
+        
     }
 }
 </script>
@@ -56,18 +59,20 @@ export default {
         margin: 0;
         padding: 0;
     }
-    .v_swiper {
+    .v_swpiper_bk {
         width: 300px;
-        height: 50px;
         overflow: hidden;
+    }
+    .v_swiper {
+        width: 110%;
+        height: 50px;
+        overflow-y: scroll;
         margin: 100px auto;
         background: #f5f5f5;
         position: relative;
     }
     ul {
         width: 300px;
-        position: absolute;
-        top: 0;
     }
     li {
         width: 300px;
@@ -75,7 +80,7 @@ export default {
         line-height: 50px;
         padding: 0 10px;
         box-sizing: border-box;
-
     }
+
 </style>
 
